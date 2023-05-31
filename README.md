@@ -4,7 +4,7 @@ This repository contains a simple solution for measuring the ambient temperature
 
 # Abstract
 
-This project presents a simple solution for measuring the ambient temperature using a temperature sensor, specifically the MCP9700-series, and an ATMega328p microcontroller. The objective is to engineer a working temperature sensor that accurately measures the temperature of the surrounding environment. The analog signal from the temperature sensor is converted to a digital temperature value, which is then displayed on two seven-segment displays. The temperature range of the sensor is from 0°C to 74°C with an accuracy of ±1°C. The hardware components used in this solution include the ATMega328p microcontroller, MCP9700 temperature sensor, ADC (Analog-to-Digital Converter), and seven-segment displays. Future improvements could include handling negative temperatures and displaying the fractional component of the temperature.
+This project presents a simple solution for measuring the ambient temperature using a temperature sensor, specifically the MCP9700-series, and an ATMega328p microcontroller. The objective is to engineer a working temperature sensor that accurately measures the temperature of the surrounding environment. The analog signal from the temperature sensor is converted to a digital temperature value, which is then displayed on two seven-segment displays. The temperature range of the sensor is from 0°C to 74°C with an accuracy of ±1°C. The hardware components used in this solution include the ATMega328p microcontroller, MCP9700 temperature sensor, ADC (Analog-to-Digital Converter), and seven-segment displays.
 
 # I. Introduction
 
