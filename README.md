@@ -81,14 +81,14 @@ The main logic for the assembly code is based on the flowchart in Figure 4. Two 
 
 A feature of the ADC is that when entering the idle sleep mode, a conversion will start to reduce noise from other circuitry within the MCU [2]. Once the conversion is complete, the ADC complete interrupt will read the result from the ADC registers. Once the number is stored in a general-purpose register, a subroutine converts it to a temperature by making use of fixed-point arithmetic. The FMUL instruction allows for Q(n.m) multiplication. Equation (2) shows how FMUL is effectively multiplying the ADC value by 125 and shifting the result to the right 7 times. However, the result is shifted once more to be in the original 8-bit form. 50 is then subtracted from the result to account for the output voltage at 0° C.
 
-$$ TA = \frac{{ADC \times \frac{{V_{ref}}}{{2^{\text{{resolution}}} \times T_c}}}}{{T_0}} = \frac{{ADC \times \frac{{5000 \ \text{{mV}}}}{{1024 \times 10 \  \text{{mV}}}} - 50}}{{T_0}}$$
+$$ TA = \frac{{ADC \times \frac{{V_{ref}}}{{2^{\text{{resolution}}} \times T_c}}}}{{T_0}} = \frac{{ADC \times \frac{{5000 \ \text{{mV}}}}{{1024 \times 10 \  \text{{mV}}}} - 50}}{{T_0}} \ \ \ \ \ (2)$$
 
 
-The temperature is separated into tens and units to display it on the seven-segment displays. The FMUL is used again by multiplying the temperature value by 26 and doing a logical shift to the right to get the tens value. The result is then multiplied by 10 and subtracted from the original temperature to get the units, as seen in Equation (3).
+The temperature is separated into tens and units to display it on the seven-segment displays. The FMUL is used again by multiplying the temperature value by 26 and doing a logical shift to the right to get the tens value. The result is then multiplied by 10 and subtracted from the original temperature to get the units, as seen in Equation (3)-(4).
 
-$$Tens = \frac{{TA \times 26}}{{12}}$$
+$$Tens = \frac{{TA \times 26}}{{12}} \ \ \ \ \ (3)$$
 
-$$Units = TA \times 10 - T$$
+$$Units = TA \times 10 - T \ \ \ \ \ (4)$$
 
 Where $T$ represents the temperature.
 
