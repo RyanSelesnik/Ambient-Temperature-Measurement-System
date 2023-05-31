@@ -1,3 +1,19 @@
+# Table of Contents
+
+- [Ambient Temperature Measurement System](#ambient-temperature-measurement-system)
+  - [Features](#features)
+  - [Design](#design)
+    - [System Overview](#system-overview)
+    - [Inputs](#inputs)
+    - [Analog to Digital Converter](#analog-to-digital-converter)
+    - [The Conversion Algorithm](#the-conversion-algorithm)
+    - [Output](#output)
+    - [Power Saving](#power-saving)
+    - [Program memory vs Data memory](#program-memory-vs-data-memory)
+    - [Trade-offs](#trade-offs)
+  - [Conclusion](#conclusion)
+  - [References](#references)
+
 # Ambient Temperature Measurement System
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
