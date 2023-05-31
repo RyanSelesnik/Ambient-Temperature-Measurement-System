@@ -85,10 +85,22 @@ $$ TA = \frac{{ADC \times \frac{{V_{ref}}}{{2^{\text{{resolution}}} \times T_c}}
 
 
 The temperature is separated into tens and units to display it on the seven-segment displays. The FMUL is used again by multiplying the temperature value by 26 and doing a logical shift to the right to get the tens value. The result is then multiplied by 10 and subtracted from the original temperature to get the units, as seen in Equation (3)-(4).
+$$
+\frac{1}{10} = 0.1
+$$
 
-$$Tens = \frac{{TA \times 26}}{{12}} \ \ \ \ \ (3)$$
+$$
+0.1 \times 2^8 \approx 26
+$$
 
-$$Units = TA \times 10 - T \ \ \ \ \ (4)$$
+$$
+\therefore \text{Tens} = (T \times 26) \times \frac{1}{2}
+$$
+
+$$
+\therefore \text{Units} = T \times 10 - \text{Tens}
+$$
+
 
 Where $T$ represents the temperature.
 
