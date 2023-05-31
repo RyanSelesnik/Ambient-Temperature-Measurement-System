@@ -30,7 +30,7 @@ The ADC of the ATMega328p microcontroller is utilized to convert the analog volt
 ## D. The Conversion Algorithm
 The conversion algorithm is based on a flowchart, which utilizes interrupts for ADC conversion and timer functions. The ADC conversion is triggered when the microcontroller enters idle sleep mode to reduce noise. The converted digital value is then processed using fixed-point arithmetic to obtain the temperature value. The temperature is separated into tens and units to be displayed on the seven-segment displays.
 
-<img src="images/FlowDiag.png" alt="Flow Diagram" width="600"/>
+<img src="images/FlowDiag.png" alt="Flow Diagram" width="400"/>
 
 ## E. Outputs
 The seven-segment displays are multiplexed to minimize the number of pins required. NPN transistors are used as switches to control the display of tens and units digits. The brightness of each segment is balanced by using 470-ohm resistors for each segment. Timer interrupts are employed to control the display switching frequency.
