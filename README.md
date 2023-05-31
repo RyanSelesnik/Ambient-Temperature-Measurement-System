@@ -81,28 +81,31 @@ The main logic for the assembly code is based on the flowchart in Figure 4. Two 
 
 A feature of the ADC is that when entering the idle sleep mode, a conversion will start to reduce noise from other circuitry within the MCU [2]. Once the conversion is complete, the ADC complete interrupt will read the result from the ADC registers. Once the number is stored in a general-purpose register, a subroutine converts it to a temperature by making use of fixed-point arithmetic. The FMUL instruction allows for Q(n.m) multiplication. Equation (2) shows how FMUL is effectively multiplying the ADC value by 125 and shifting the result to the right 7 times. However, the result is shifted once more to be in the original 8-bit form. 50 is then subtracted from the result to account for the output voltage at 0° C.
 
-$$ TA = \frac{{ADC \times \frac{{V_{ref}}}{{2^{\text{{resolution}}} \times T_c}}}}{{T_0}} = \frac{{ADC \times \frac{{5000 \ \text{{mV}}}}{{1024 \times 10 \  \text{{mV}}}} - 50}}{{T_0}} \ \ \ \ \ (2)$$
-
-
-The temperature is separated into tens and units to display it on the seven-segment displays. The FMUL is used again by multiplying the temperature value by 26 and doing a logical shift to the right to get the tens value. The result is then multiplied by 10 and subtracted from the original temperature to get the units, as seen in Equation (3)-(4).
 $$
-\frac{1}{10} = 0.1
+TA = \frac{{ADC \times \frac{{V_{ref}}}{{2^{\text{{resolution}}} \times T_c}}}}{{T_0}} = \frac{{ADC \times \frac{{5000 \ \text{{mV}}}}{{1024 \times 10 \ \text{{mV}}}} - 50}}{{T_0}} \ \ \ \ \ (2)
 $$
 
-$$
-0.1 \times 2^8 \approx 26
-$$
+The ADC (Analog-to-Digital Converter) feature of the microcontroller allows for noise reduction when entering the idle sleep mode. During this mode, a conversion is initiated by the ADC to measure the temperature and minimize interference from other circuitry [2]. Once the conversion is finished, the ADC complete interrupt retrieves the result from the ADC registers. The obtained value is then stored in a general-purpose register.
+
+To convert the ADC value into a temperature, a subroutine utilizes fixed-point arithmetic. Equation (2) demonstrates the conversion process, where the ADC value is multiplied by a scaling factor. The scaling factor is determined by the reference voltage (V_ref), ADC resolution, and temperature coefficient (T_c). The result is divided by the reference temperature (T_0).
+
+In this equation, the numerator represents the calculation of the scaling factor using specific values for V_ref, ADC resolution, and T_c. The denominator incorporates the reference temperature T_0. The resulting value represents the temperature in degrees Celsius (°C) obtained from the ADC reading.
+
+For displaying the temperature on the seven-segment displays, the temperature value is split into its tens and units digits. This separation allows for distinct presentation of the temperature.
+
+Equation (3) illustrates the use of the FMUL instruction to multiply the temperature value by 26 and perform a logical right shift, effectively dividing the result by 2. This calculation produces the tens value.
 
 $$
-\therefore \text{Tens} = (T \times 26) \times \frac{1}{2}
+\text{{Tens}} = (T \times 26) \times \frac{1}{2} \ \ \ \ \ (3)
 $$
 
+Equation (4) determines the units value by multiplying the temperature by 10 and subtracting the previously calculated tens value.
+
 $$
-\therefore \text{Units} = T \times 10 - \text{Tens}
+\text{{Units}} = T \times 10 - \text{{Tens}} \ \ \ \ \ (4)
 $$
 
-
-Where $T$ represents the temperature.
+In the above equations, the variable T represents the temperature.
 
 ![](./images/FlowDiag.png)
 
