@@ -1,4 +1,4 @@
-# Simple Temperature Measurement Solution
+# Ambient Temperature Measurement System
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
