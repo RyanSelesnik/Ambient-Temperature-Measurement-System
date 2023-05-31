@@ -92,7 +92,7 @@ $$Units = TA \times 10 - T \ \ \ \ \ (4)$$
 
 Where $T$ represents the temperature.
 
-![Figure 3: Flow diagram showing the main logic for the code](./images/FlowDiag.png)
+![](./images/FlowDiag.png)
 
 *Figure 4: Flow diagram showing the main logic for the code*
 
