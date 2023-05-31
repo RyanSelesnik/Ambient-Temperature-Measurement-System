@@ -100,7 +100,15 @@ Where $T$ represents the temperature.
 
 The display of both unit and tens values would typically require a total of sixteen pins, with each segment needing seven pins plus one for ground. However, to minimize the pin count, the displays are multiplexed [3]. As shown in Figure 2, this multiplexing technique reduces the required pins to seven for the segments and two for selection. To control the display, an NPN transistor is utilized as a switch. When PB0 is high, the tens value is displayed, and when PB1 is high, the units value is displayed. Additionally, the transistor amplifies a smaller current from these pins through each segment to ground [4]. To ensure proper operation, 1410-ohm resistors are connected to the transistor bases. Each segment is connected to a 470-ohm resistor instead of using a high resistance connected to the common ground of each display. This arrangement ensures that each segment draws an equal amount of current, resulting in uniform brightness. The multiplexing logic can be seen in Figure 5.
 
-To decode the units and tens values into their corresponding binary numbers, a lookup table is stored in program memory.
+To decode the units and tens values into their corresponding binary numbers, a lookup table is stored in program memory:
+
+```
+;7seg truth table 	
+.org 0x0100
+seg:
+.db 0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0xff, 0x6f 
+
+```
 
 ![](./images/mux.png)
 
