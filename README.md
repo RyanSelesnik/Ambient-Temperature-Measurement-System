@@ -26,7 +26,7 @@ This project imposes the constraint of coding the firmware exclusively in the AV
 
 ### Inputs
 
-The MCP9700 is a linear thermistor integrated circuit [1]. It has 3 pins, as shown in Figure 2. The thermistor's resistance changes with temperature, which, in turn, affects the voltage at $V_out$. By monitoring this voltage change with the microcontroller, the temperature can be recorded. The relationship between the voltage and temperature is given by Equation (1) [1].
+The MCP9700 is a linear thermistor integrated circuit [1]. It has 3 pins, as shown in Figure 2. The thermistor's resistance changes with temperature, which, in turn, affects the voltage at $V_{out}$. By monitoring this voltage change with the microcontroller, the temperature can be recorded. The relationship between the voltage and temperature is given by Equation (1) [1].
 
 $$ V_{out} = T_{c} \times T_{A} + V_{0^\circ C} \ \ \ \ \ (1)$$
 
@@ -38,12 +38,22 @@ Where:
 
 ### Analog to Digital Converter
 
-To translate the voltage change at $$V_out$$ into a digital signal that the microcontroller can process, an analog to digital converter (ADC) is employed. The ADC converts the continuous analog signal into a discrete digital number by approximating the voltage change [2]. For this project, a 10-bit resolution was chosen to detect smaller changes in temperature. The ADC clock pre-scaler was set to 128, which provides a sufficient sample rate (50kHz to 200kHz) for accurate measurements. It is important to note that the ADC's precision is enhanced, not its accuracy, which depends on the chosen reference voltage [5]. In this case, the reference voltage was set to 5V.
+To translate the voltage change at $V_{out}$ into a digital signal that the microcontroller can process, the 328P's analog to digital converter (ADC) is employed. For this project, a 10-bit resolution was chosen to detect smaller changes in temperature. The ADC clock pre-scaler was set to 128, which provides a sufficient sample rate (50kHz to 200kHz) for accurate measurements. It is important to note that the ADC's precision is enhanced, not its accuracy, which depends on the chosen reference voltage [5]. In this case, the reference voltage was set to 5V.
 
 ### The Conversion Algorithm 
 
 The main logic of the assembly code is based on the flowchart shown in Figure 4. Two interrupts are used: ADC conversion complete and Timer interrupt. Utilizing interrupts ensures that the interrupt handler is executed only when necessary, allowing other activities to occur in the background.
 
-![Figure 4: Flow diagram showing the main logic for the code](./images/circuit.png)
+![Figure 3: Flow diagram showing the main logic for the code](./images/FlowDiag.png)
 
 When the microcontroller enters idle sleep mode, a conversion is triggered to reduce noise.
+
+### Output
+
+The display of both unit and tens values would typically require a total of sixteen pins, with each segment needing seven pins plus one for ground. However, to minimize the pin count, the displays are multiplexed [3]. As shown in Figure 2, this multiplexing technique reduces the required pins to seven for the segments and two for selection. To control the display, an NPN transistor is utilized as a switch. When PB0 is high, the tens value is displayed, and when PB1 is high, the units value is displayed. Additionally, the transistor amplifies a smaller current from these pins through each segment to ground [4]. To ensure proper operation, 1410-ohm resistors are connected to the transistor bases. Each segment is connected to a 470-ohm resistor instead of using a high resistance connected to the common ground of each display. This arrangement ensures that each segment draws an equal amount of current, resulting in uniform brightness. The multiplexing logic can be seen in Figure 5.
+
+To decode the units and tens values into their corresponding binary numbers, a lookup table is stored in program memory.
+
+Figure 5: Multiplexing Units and Tens values to PORTD on the MCU
+
+Timer interrupts are employed to instruct the microcontroller on which pins to set high and when to do so. This is achieved by pre-scaling the clock by a factor of 1024. With a clock speed of 16 MHz, the timer clock is reduced to approximately 16 kHz. An interrupt is triggered approximately every 8 milliseconds, corresponding to 255 ticks for Compare match A and 127 ticks for Compare match B. Figure 6 illustrates the timing diagram for both compare registers. The interrupt handler for compare registers A and B outputs the units and tens values, respectively, to PORTD.
