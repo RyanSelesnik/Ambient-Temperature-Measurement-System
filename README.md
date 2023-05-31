@@ -46,15 +46,11 @@ The resulting temperature measurement system provides accurate readings within t
 - Enhancing the system to handle negative temperatures using signed arithmetic
 - Adding an additional display for displaying the fractional component of the temperature
 
-## Contributions
-
-Contributions to this project are welcome! If you find any issues or have suggestions for improvements, feel free to submit a pull request.
-
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
 
-## Acknowledgments
+## References
 
 - Microchip MCP9700-series Temperature Sensor Datasheet
 - Atmel ATMega328p Microcontroller Datasheet
