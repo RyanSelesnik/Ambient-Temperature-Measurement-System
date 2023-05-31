@@ -1,53 +1,61 @@
-# Ambient Temperature Measurement System
+# Simple Temperature Measurement Solution
 
-This repository contains a simple solution for measuring the ambient temperature using a temperature sensor and microcontroller. The project was developed part of the School of Electrical and Information Engineering at the University of the Witwatersrand, Johannesburg, South Africa.
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-# Abstract
+A simple solution for measuring the ambient temperature using an analogue-to-digital conversion approach. This project provides a temperature sensor system that accurately measures the temperature of the surrounding environment and displays it on two seven-segment displays.
 
-This project presents a simple solution for measuring the ambient temperature using a temperature sensor, specifically the MCP9700-series, and an ATMega328p microcontroller. The objective is to engineer a working temperature sensor that accurately measures the temperature of the surrounding environment. The analog signal from the temperature sensor is converted to a digital temperature value, which is then displayed on two seven-segment displays. The temperature range of the sensor is from 0°C to 74°C with an accuracy of ±1°C. The hardware components used in this solution include the ATMega328p microcontroller, MCP9700 temperature sensor, ADC (Analog-to-Digital Converter), and seven-segment displays.
+## Features
 
-# I. Introduction
+- Utilizes the MCP9700-series temperature sensor and the ATMega328p microcontroller (MCU)
+- Converts analogue temperature signal to a digital value using the ADC
+- Displays temperature on two seven-segment displays
+- Temperature range: 0°C to 74°C with ±1°C accuracy
 
-To accurately measure and display the temperature of the surrounding environment, a conversion from an analog signal to a digital one is necessary. This project proposes a solution using the MCP9700-series temperature sensor, the ATMega328p microcontroller, and two seven-segment displays. The firmware for this project is implemented in assembly language, and the use of additional integrated circuits is prohibited. This repository provides an overview of the design of the solution, discusses the obtained results, and suggests future recommendations.
-
-# II. Design
-
-## A. System Overview
-The system consists of the MCP9700-series temperature sensor as the input, the ATMega328p microcontroller as the controller, and two seven-segment displays as the output. The schematic of the system and the actual circuitry on a breadboard are presented. The MCP9700 temperature sensor detects temperature changes by monitoring the voltage at its output pin. The analog signal is then converted to a digital value using the ADC of the microcontroller.
+## Hardware Setup
 
 <img src="images/circuit.png" alt="Circuit Diagram" width="500"/>
+
 <img src="images/schematic.png" alt="Schematic" width="500"/>
+The system comprises the following components:
 
+- MCP9700-series temperature sensor
+- ATMega328p microcontroller
+- Two seven-segment displays
 
+## Conversion Algorithm
 
-
-## B. Inputs
-The MCP9700 temperature sensor is a linear thermistor integrated circuit with three pins. The resistance of the thermistor varies with temperature, resulting in a corresponding change in voltage at the output pin. The voltage is related to temperature by a linear equation.
-
-## C. Analog to Digital Converter
-The ADC of the ATMega328p microcontroller is utilized to convert the analog voltage from the temperature sensor to a discrete digital number. A higher bit resolution is used to detect smaller temperature changes. The chosen ADC clock pre-scaler and reference voltage contribute to the precision of the measurement.
-
-## D. The Conversion Algorithm
-The conversion algorithm is based on a flowchart, which utilizes interrupts for ADC conversion and timer functions. The ADC conversion is triggered when the microcontroller enters idle sleep mode to reduce noise. The converted digital value is then processed using fixed-point arithmetic to obtain the temperature value. The temperature is separated into tens and units to be displayed on the seven-segment displays.
+The assembly code implements a conversion algorithm based on the following flow diagram:
 
 <img src="images/FlowDiag.png" alt="Flow Diagram" width="400"/>
 
-## E. Outputs
-The seven-segment displays are multiplexed to minimize the number of pins required. NPN transistors are used as switches to control the display of tens and units digits. The brightness of each segment is balanced by using 470-ohm resistors for each segment. Timer interrupts are employed to control the display switching frequency.
+- ADC interrupts are used to read the ADC value when a conversion is complete
+- The ADC value is converted to a temperature using fixed-point arithmetic
+- The temperature is separated into tens and units to display on the seven-segment displays
 
-## F. Power Saving
-Power saving techniques include utilizing the ADC idle mode and implementing sleep loops to save power while the ADC is disabled. The multiplexing of displays and the choice of timer interrupt frequency contribute to power optimization.
+## Power Saving
 
-## III. Discussion
-To validate the accuracy of the temperature measurement, a program was developed in the Arduino Integrated Development Environment (IDE) to convert the displayed temperature to its corresponding analog voltage value. The obtained results show a temperature range of 0°C to 74°C with an accuracy of ±1°C. The design trade-offs made, such as multiplexing displays and utilizing program memory for the lookup table, have resulted in improved temperature precision and power savings. However, the current implementation does not support negative temperatures, and the fractional component of the temperature is not displayed. These areas can be addressed in future enhancements.
+The system incorporates power-saving techniques to optimize energy consumption:
 
-## IV. Conclusion
-This project successfully presents a simple solution for measuring the ambient temperature using the MCP9700-series temperature sensor and the ATMega328p microcontroller. The hardware components used, including the temperature sensor, ADC, and seven-segment displays, are integrated to provide an accurate temperature measurement range suitable for in-home applications. The implemented firmware, based on assembly language, demonstrates the efficiency and power-saving capabilities of the system. Future improvements can include handling negative temperatures and displaying the fractional component of the temperature to further enhance the system's robustness and accuracy.
+- Utilizes idle mode to disable the ADC and save power
+- Implements display multiplexing to switch between units and tens at a frequency of 120Hz
 
-# Acknowledgments
-The author would like to thank the School of Electrical and Information Engineering at the University of the Witwatersrand for their support and resources during the development of this project.
+## Results and Future Recommendations
 
-#  References
-[1] Datasheet: MCP9700/MCP9700A, Microchip Technology Inc., 2006.
+The resulting temperature measurement system provides accurate readings within the specified range. Future recommendations include:
 
-[2] ATMega328/P Datasheet, Microchip Technology Inc., 2016.
+- Enhancing the system to handle negative temperatures using signed arithmetic
+- Adding an additional display for displaying the fractional component of the temperature
+
+## Contributions
+
+Contributions to this project are welcome! If you find any issues or have suggestions for improvements, feel free to submit a pull request.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+## Acknowledgments
+
+- Microchip MCP9700-series Temperature Sensor Datasheet
+- Atmel ATMega328p Microcontroller Datasheet
+- Subero, A. (2018). Programming Pic Microcontrollers with Xc8.
