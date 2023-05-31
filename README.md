@@ -103,11 +103,13 @@ The display of both unit and tens values would typically require a total of sixt
 To decode the units and tens values into their corresponding binary numbers, a lookup table is stored in program memory.
 
 ![](./images/mux.png)
+
 *Figure 5: Multiplexing Units and Tens values to PORTD on the MCU*
 
 Timer interrupts are employed to instruct the microcontroller on which pins to set high and when to do so. This is achieved by pre-scaling the clock by a factor of 1024. With a clock speed of 16 MHz, the timer clock is reduced to approximately 16 kHz. An interrupt is triggered approximately every 8 milliseconds, corresponding to 255 ticks for Compare match A and 127 ticks for Compare match B. Figure 6 illustrates the timing diagram for both compare registers. The interrupt handler for compare registers A and B outputs the units and tens values, respectively, to PORTD.
 
 ![](./images/timing.png)
+
 *Figure 6: Timing diagram for multiplexing interrupts*
 
 ### Power Saving:
