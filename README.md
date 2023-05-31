@@ -15,8 +15,8 @@ To accurately measure and display the temperature of the surrounding environment
 ## A. System Overview
 The system consists of the MCP9700-series temperature sensor as the input, the ATMega328p microcontroller as the controller, and two seven-segment displays as the output. The schematic of the system and the actual circuitry on a breadboard are presented. The MCP9700 temperature sensor detects temperature changes by monitoring the voltage at its output pin. The analog signal is then converted to a digital value using the ADC of the microcontroller.
 
-![Circuit](images/circuit.png)
-*Figure 1: Circuit Diagram*
+<img src="images/circuit.png" alt="Circuit Diagram" width="400"/>
+
 
 ![Schematic](images/schematic.png)
 *Figure 1: Schematic*
