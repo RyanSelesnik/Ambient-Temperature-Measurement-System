@@ -24,13 +24,34 @@ The system comprises the following components:
 
 ## Conversion Algorithm
 
-The assembly code implements a conversion algorithm based on the following flow diagram:
 
 <img src="images/FlowDiag.png" alt="Flow Diagram" width="400"/>
 
-- ADC interrupts are used to read the ADC value when a conversion is complete
-- The ADC value is converted to a temperature using fixed-point arithmetic
-- The temperature is separated into tens and units to display on the seven-segment displays
+The conversion algorithm involves the following steps: 
+
+1. Set up the ADC:
+   - Set the reference voltage to AVCC (5V) by setting the REFS1 and REFS0 bits in the ADMUX register.
+   - Set the ADC left-adjust result bit (ADLAR) to ensure that the 8 most significant bits of the ADC result are stored in the ADCH register.
+   - Set the ADC channel to ADC0 (pin A0) by setting the MUX3:0 bits in the ADMUX register.
+   - Enable the ADC by setting the ADEN bit in the ADCSRA register.
+   - Set the ADC prescaler to 128 by setting the ADPS2, ADPS1, and ADPS0 bits in the ADCSRA register.
+
+2. Measure the temperature:
+   - Start the ADC conversion by setting the ADSC bit in the ADCSRA register.
+   - Wait for the conversion to complete by continuously checking the ADSC bit.
+   - Read the ADC result from the ADCH register.
+
+3. Convert the ADC result to temperature:
+   - Multiply the ADC result by the temperature coefficient (10 mV/°C) and divide by 1024 to obtain the voltage change in millivolts.
+   - Subtract the output voltage at 0°C (50°C) to obtain the voltage change from 0°C.
+   - Divide the voltage change by the temperature coefficient (10 mV/°C) to obtain the temperature in °C.
+
+4. Display the temperature:
+   - Separate the temperature into two digits for the seven-segment display.
+   - Convert each digit to its corresponding seven-segment representation using a lookup table.
+   - Output the segments for each digit to the corresponding seven-segment display.
+
+5. Repeat the measurement and display process continuously.
 
 ## Power Saving
 
