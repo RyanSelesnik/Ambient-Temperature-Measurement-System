@@ -21,9 +21,10 @@ This project imposes the constraint of coding the firmware exclusively in the AV
 ### System Overview
 
 ![Figure 1: System circuitry implemented on a bread board](./images/circuit.png)
+*Figure 1: System circuitry implemented on a bread board*
 
 ![Figure 2: System electircal schematic with a 5V supply](./images/schematic.png)
-
+*Figure 2: System electircal schematic with a 5V supply*
 ### Inputs
 
 The MCP9700 is a linear thermistor integrated circuit [1]. It has 3 pins, as shown in Figure 2. The thermistor's resistance changes with temperature, which, in turn, affects the voltage at $V_{out}$. By monitoring this voltage change with the microcontroller, the temperature can be recorded. The relationship between the voltage and temperature is given by Equation (1) [1].
