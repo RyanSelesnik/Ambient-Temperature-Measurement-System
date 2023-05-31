@@ -33,7 +33,7 @@ This project imposes the constraint of coding the firmware exclusively in the AV
 
 # Usage 
 
-Assuming the system is implemnted as described below, follow these instrcutions to run burn the code onto the 328P:
+Assuming the system is implemented as described below, follow these instructions to burn the code onto the 328P:
 
 
 1. Open Atmel Studio and create a new project.
