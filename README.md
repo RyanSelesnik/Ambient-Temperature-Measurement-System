@@ -2,6 +2,7 @@
 
 - [Ambient Temperature Measurement System](#ambient-temperature-measurement-system)
   - [Features](#features)
+  - [Usage](#usage)
   - [Design](#design)
     - [System Overview](#system-overview)
     - [Inputs](#inputs)
@@ -75,9 +76,30 @@ To translate the voltage change at $V_{out}$ into a digital signal that the micr
 
 ### The Conversion Algorithm 
 
-The main logic of the assembly code is based on the flowchart shown in Figure 4. Two interrupts are used: ADC conversion complete and Timer interrupt. Utilizing interrupts ensures that the interrupt handler is executed only when necessary, allowing other activities to occur in the background.
+The main logic for the assembly code is based on the flowchart in Figure 4. Two interrupts were used: an ADC conversion complete, and a Timer interrupt. The benefit of using interrupts is that the interrupt handler will only be executed when needed, thereby allowing other activities to happen in the background. 
+
+
+A feature of the ADC is that when entering the idle sleep mode, a conversion will start to reduce noise from other circuitry within the MCU [2]. Once the conversion is complete, the ADC complete interrupt will read the result from the ADC registers. Once the number is stored in a general-purpose register, a subroutine converts it to a temperature by making use of fixed-point arithmetic. The FMUL instruction allows for Q(n.m) multiplication. Equation (2) shows how FMUL is effectively multiplying the ADC value by 125 and shifting the result to the right 7 times. However, the result is shifted once more to be in the original 8-bit form. 50 is then subtracted from the result to account for the output voltage at 0° C.
+
+$$
+TA = \frac{{ADC \times \frac{{V_{ref}}}}{{2^{\text{{resolution}}} \times T_c}}}{{T_0°C}} = \frac{{ADC \times \frac{{5000 \, \text{{mV}}}}{{1024 \times 10 \, \text{{mV}}}} - 50}}
+$$
+
+The temperature is separated into tens and units to display it on the seven-segment displays. The FMUL is used again by multiplying the temperature value by 26 and doing a logical shift to the right to get the tens value. The result is then multiplied by 10 and subtracted from the original temperature to get the units, as seen in Equation (3).
+
+\[
+Tens = \frac{{TA \times 26}}{{12}}
+\]
+
+\[
+Units = TA \times 10 - T
+\]
+
+Where \( T \) represents the temperature.
 
 ![Figure 3: Flow diagram showing the main logic for the code](./images/FlowDiag.png)
+
+*Figure 4: Flow diagram showing the main logic for the code*
 
 When the microcontroller enters idle sleep mode, a conversion is triggered to reduce noise.
 
