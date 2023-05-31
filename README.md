@@ -2,77 +2,48 @@
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-A simple solution for measuring the ambient temperature using an analogue-to-digital conversion approach. This project provides a temperature sensor system that accurately measures the temperature of the surrounding environment and displays it on two seven-segment displays.
-
-## Features
-
-- Utilizes the MCP9700-series temperature sensor and the ATMega328p microcontroller (MCU)
-- Converts analogue temperature signal to a digital value using the ADC
-- Displays temperature on two seven-segment displays
-- Temperature range: 0°C to 74°C with ±1°C accuracy
-
-## Hardware Setup
-
-<img src="images/circuit.png" alt="Circuit Diagram" width="500"/>
-
-<img src="images/schematic.png" alt="Schematic" width="500"/>
-The system comprises the following components:
-
-- MCP9700-series temperature sensor
-- ATMega328p microcontroller
-- Two seven-segment displays
-
-## Conversion Algorithm
+*School of Electrical and Information Engineering, University of the Witwatersrand, Johannesburg 2050, South Africa*
 
 
-<img src="images/FlowDiag.png" alt="Flow Diagram" width="400"/>
+This project aims to engineer a system capable of measuring the temperature of the surrounding environment and displaying the result to the user. 
 
-The conversion algorithm involves the following steps: 
+# Features
 
-1. Set up the ADC:
-   - Set the reference voltage to AVCC (5V) by setting the REFS1 and REFS0 bits in the ADMUX register.
-   - Set the ADC left-adjust result bit (ADLAR) to ensure that the 8 most significant bits of the ADC result are stored in the ADCH register.
-   - Set the ADC channel to ADC0 (pin A0) by setting the MUX3:0 bits in the ADMUX register.
-   - Enable the ADC by setting the ADEN bit in the ADCSRA register.
-   - Set the ADC prescaler to 128 by setting the ADPS2, ADPS1, and ADPS0 bits in the ADCSRA register.
+* Utilizes the MCP9700-series temperature sensor and the ATMega328p microcontroller (MCU)
+* Displays temperature on two seven-segment displays
+* Temperature range: 0°C to 74°C with ±1°C accuracy
 
-2. Measure the temperature:
-   - Start the ADC conversion by setting the ADSC bit in the ADCSRA register.
-   - Wait for the conversion to complete by continuously checking the ADSC bit.
-   - Read the ADC result from the ADCH register.
+This project imposes the constraint of coding the firmware exclusively in the AVR instruction set, while prohibiting the use of additional integrated circuits. Therefore, the project required an intricate understanding of the 328P's architecture.
 
-3. Convert the ADC result to temperature:
-   - Multiply the ADC result by the temperature coefficient (10 mV/°C) and divide by 1024 to obtain the voltage change in millivolts.
-   - Subtract the output voltage at 0°C (50°C) to obtain the voltage change from 0°C.
-   - Divide the voltage change by the temperature coefficient (10 mV/°C) to obtain the temperature in °C.
 
-4. Display the temperature:
-   - Separate the temperature into two digits for the seven-segment display.
-   - Convert each digit to its corresponding seven-segment representation using a lookup table.
-   - Output the segments for each digit to the corresponding seven-segment display.
+## Design
 
-5. Repeat the measurement and display process continuously.
+### System Overview
 
-## Power Saving
+![Figure 1: System circuitry implemented on a bread board](./images/circuit.png)
 
-The system incorporates power-saving techniques to optimize energy consumption:
+![Figure 2: System electircal schematic with a 5V supply](./images/circuit.png)
 
-- Utilizes idle mode to disable the ADC and save power
-- Implements display multiplexing to switch between units and tens at a frequency of 120Hz
+### Inputs
 
-## Results and Future Recommendations
+The MCP9700 is a linear thermistor integrated circuit [1]. It has 3 pins, as shown in Figure 2. The thermistor's resistance changes with temperature, which, in turn, affects the voltage at $V_out$. By monitoring this voltage change with the microcontroller, the temperature can be recorded. The relationship between the voltage and temperature is given by Equation (1) [1].
 
-The resulting temperature measurement system provides accurate readings within the specified range. Future recommendations include:
+$$ V_{out} = T_{c} \times T_{A} + V_{0^\circ C} \ \ \ \ \ (1)$$
 
-- Enhancing the system to handle negative temperatures using signed arithmetic
-- Adding an additional display for displaying the fractional component of the temperature
+Where:
+- $T_{c}$ is the temperature coefficient ($10mV/°C$)
+- $T_{A}$ is the ambient temperature
+- $V_{out}$ is the output voltage
+- $V_{0^\circ C}$ is the output voltage at 0°C (50°C)
 
-## License
+### Analog to Digital Converter
 
-This project is licensed under the [MIT License](LICENSE).
+To translate the voltage change at $$V_out$$ into a digital signal that the microcontroller can process, an analog to digital converter (ADC) is employed. The ADC converts the continuous analog signal into a discrete digital number by approximating the voltage change [2]. For this project, a 10-bit resolution was chosen to detect smaller changes in temperature. The ADC clock pre-scaler was set to 128, which provides a sufficient sample rate (50kHz to 200kHz) for accurate measurements. It is important to note that the ADC's precision is enhanced, not its accuracy, which depends on the chosen reference voltage [5]. In this case, the reference voltage was set to 5V.
 
-## References
+### The Conversion Algorithm 
 
-- Microchip MCP9700-series Temperature Sensor Datasheet
-- Atmel ATMega328p Microcontroller Datasheet
-- Subero, A. (2018). Programming Pic Microcontrollers with Xc8.
+The main logic of the assembly code is based on the flowchart shown in Figure 4. Two interrupts are used: ADC conversion complete and Timer interrupt. Utilizing interrupts ensures that the interrupt handler is executed only when necessary, allowing other activities to occur in the background.
+
+![Figure 4: Flow diagram showing the main logic for the code](./images/circuit.png)
+
+When the microcontroller enters idle sleep mode, a conversion is triggered to reduce noise.
