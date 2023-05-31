@@ -22,7 +22,7 @@ This project imposes the constraint of coding the firmware exclusively in the AV
 
 ![Figure 1: System circuitry implemented on a bread board](./images/circuit.png)
 
-![Figure 2: System electircal schematic with a 5V supply](./images/circuit.png)
+![Figure 2: System electircal schematic with a 5V supply](./images/schematic.png)
 
 ### Inputs
 
