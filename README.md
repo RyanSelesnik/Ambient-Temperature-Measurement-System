@@ -25,6 +25,7 @@ This project imposes the constraint of coding the firmware exclusively in the AV
 
 ![Figure 2: System electircal schematic with a 5V supply](./images/schematic.png)
 *Figure 2: System electircal schematic with a 5V supply*
+
 ### Inputs
 
 The MCP9700 is a linear thermistor integrated circuit [1]. It has 3 pins, as shown in Figure 2. The thermistor's resistance changes with temperature, which, in turn, affects the voltage at $V_{out}$. By monitoring this voltage change with the microcontroller, the temperature can be recorded. The relationship between the voltage and temperature is given by Equation (1) [1].
@@ -55,6 +56,60 @@ The display of both unit and tens values would typically require a total of sixt
 
 To decode the units and tens values into their corresponding binary numbers, a lookup table is stored in program memory.
 
-Figure 5: Multiplexing Units and Tens values to PORTD on the MCU
+![](./images/mux.png)
+*Figure 5: Multiplexing Units and Tens values to PORTD on the MCU*
 
 Timer interrupts are employed to instruct the microcontroller on which pins to set high and when to do so. This is achieved by pre-scaling the clock by a factor of 1024. With a clock speed of 16 MHz, the timer clock is reduced to approximately 16 kHz. An interrupt is triggered approximately every 8 milliseconds, corresponding to 255 ticks for Compare match A and 127 ticks for Compare match B. Figure 6 illustrates the timing diagram for both compare registers. The interrupt handler for compare registers A and B outputs the units and tens values, respectively, to PORTD.
+
+![](./images/timing.png)
+*Figure 6: Timing diagram for multiplexing interrupts*
+
+### Power Saving:
+
+### Idle mode:
+To minimize power consumption, the ADC is disabled when not in use [2]. Additionally, a second sleep loop is implemented to further conserve power while the ADC remains disabled.
+
+### Multiplexing:
+To optimize power usage during display switching, the frequency at which the displays alternate is set as low as possible. The human eye can perceive frequencies up to approximately 60Hz [7]. Thus, the displays are turned on and off at a frequency of 120Hz, which is the lowest achievable frequency for an 8-bit timer. This ensures that the human eye cannot detect the switching, resulting in power savings.
+
+### Program memory vs Data memory:
+
+The choice of storing the lookup table in program memory offers power-saving benefits. Program memory is non-volatile [2], meaning that the lookup table only needs to be burned into the microcontroller once. In contrast, if the lookup table were stored in data memory, it would require setup every time the device is powered up since data memory is volatile. By utilizing program memory, power consumption is reduced.
+
+### Trade-offs
+
+While designing the final solution, multiple approaches were considered. The pros and cons of each solution are summarized in the following table:
+
+| Solution                    | Pros                                 | Cons                                               |
+|-----------------------------|--------------------------------------|----------------------------------------------------|
+| Using a timer to start an ADC | More control over conversion start   | Incompatible with sleep modes like idle mode and ADC noise cancelling mode  |
+| 8-bit resolution             | Fewer cycles for ADC value reading   | Less precise temperature readings                   |
+| Using 16 pins for displays   | Easier setup                         | Higher power consumption due to constant display operation    |
+
+In the end, the trade-offs made were good ones as more power is saved and the temperature reading is more precise.
+
+# Conclusion 
+
+The system provides a suitable temperature measurement range for in-home use, covering 0°C to 74°C with an accuracy of ±1°C. This range is considered adequate considering the MCU's maximum withstand temperature of 85°C [2] and typical room temperatures falling between 20°C and 22°C [6].
+
+During the design and implementation process, valuable knowledge was gained on utilizing existing engineered products, understanding MCU operation, and constructing breadboard circuits. Successful aspects of the design included display multiplexing and setting up the lookup table in program memory.
+
+To enhance the design, negative temperature readings could be included using the FMULS instruction for signed arithmetic. Additionally, the addition of another display for the fractional component of the temperature could improve accuracy to one decimal place.
+
+In conclusion, the solution successfully displays the temperature on two seven-segment displays, incorporating the MCP9700 temperature function, ADC resolution, and reference voltage of the ATMega328p. The displayed temperature range is 0°C to 74°C with an accuracy of ±1°C. However, further improvements are possible to withstand harsher environments and provide more accurate temperature readings.
+
+# References 
+
+
+1. Microchip Technology Inc., "MCP9700/MCP9700A Temperature Sensor," [Online]. Available: http://ww1.microchip.com/downloads/en/DeviceDoc/20001942F.pdf.
+
+2. Microchip Technology Inc., "ATmega48A/PA/88A/PA/168A/PA/328/P Datasheet," [Online]. Available: http://ww1.microchip.com/downloads/en/DeviceDoc/ATmega48A-PA-88A-PA-168A-PA-328-P-DS-DS40002061A.pdf.
+
+3. A. Subero, "Programming Pic Microcontrollers with Xc8," Apress, 2018.
+
+4. P. Horowitz and W. Hill, "The art of electronics," Cambridge Univ. Press, 1989.
+
+5. M. Oljaca and B. Baker, "How the voltage reference affects ADC performance, Part 2," Analog Applications, pp. 5-9, 2009.
+
+6. H. Company, "The American Heritage Dictionary Entry: Room Temperature," [Online]. Available: https://web.archive.org/web/20150108000657/https://ahdictionary.com/word/search.html?q=room+temperature [Accessed 7 June 2020].
+
