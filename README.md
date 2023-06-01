@@ -2,7 +2,6 @@
 
 - [Ambient Temperature Measurement System](#ambient-temperature-measurement-system)
   - [Features](#features)
-  - [Usage](#usage)
   - [Design](#design)
     - [System Overview](#system-overview)
     - [Inputs](#inputs)
@@ -28,23 +27,6 @@ This project aims to engineer a system capable of measuring the temperature of t
 * Temperature range: 0°C to 74°C with ±1°C accuracy
 
 Note that the firmware is exclusively programmed using AVR instruction set. Therefore, the system requires an intricate understanding of the 328P's architecture.
-
-# Usage 
-
-Assuming the system is implemented as described below, follow these instructions to burn the code onto the 328P:
-
-
-1. Open Atmel Studio and create a new project.
-2. Choose the appropriate microcontroller model (e.g., ATmega328P) for your project.
-3. Create a new source file in the project.
-4. Copy the provided code into the new source file.
-5. Build the project to compile the code.
-6. Connect your microcontroller to the computer using a programmer (e.g., AVRISP, USBasp) and ensure it is recognized by Atmel Studio.
-7. Configure the programming settings in Atmel Studio to match your hardware setup (e.g., programmer, microcontroller model, communication interface).
-8. Program the microcontroller by selecting the appropriate programming option in Atmel Studio (e.g., "Device Programming" or "Start Without Debugging").
-9. After successful programming, disconnect the programmer from the microcontroller.
-10. Connect the necessary hardware components according to the circuit diagram in Figure 2.
-11. Power up the circuit and observe the temperature readings displayed on the seven-segment displays.
 
 # Design
 
