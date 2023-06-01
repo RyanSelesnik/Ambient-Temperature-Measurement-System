@@ -19,8 +19,6 @@
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-*School of Electrical and Information Engineering, University of the Witwatersrand, Johannesburg 2050, South Africa*
-
 This project aims to engineer a system capable of measuring the temperature of the surrounding environment and displaying the result to the user. 
 
 # Features
@@ -29,7 +27,7 @@ This project aims to engineer a system capable of measuring the temperature of t
 * Displays temperature on two seven-segment displays
 * Temperature range: 0°C to 74°C with ±1°C accuracy
 
-This project imposes the constraint of coding the firmware exclusively in the AVR instruction set, while prohibiting the use of additional integrated circuits. Therefore, the project required an intricate understanding of the 328P's architecture.
+Note that the firmware is exclusively programmed in the AVR instruction set. Therefore, the system requires an intricate understanding of the 328P's architecture.
 
 # Usage 
 
