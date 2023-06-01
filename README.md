@@ -27,7 +27,7 @@ This project aims to engineer a system capable of measuring the temperature of t
 * Displays temperature on two seven-segment displays
 * Temperature range: 0°C to 74°C with ±1°C accuracy
 
-Note that the firmware is exclusively programmed in the AVR instruction set. Therefore, the system requires an intricate understanding of the 328P's architecture.
+Note that the firmware is exclusively programmed using AVR instruction set. Therefore, the system requires an intricate understanding of the 328P's architecture.
 
 # Usage 
 
